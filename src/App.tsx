@@ -5,6 +5,7 @@ import {Text, View, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import IconButton from './Components/IconButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function HomeScreen() {
   return (
@@ -33,12 +34,13 @@ export default function App() {
             let iconName;
 
             if (route.name === 'Home') {
-              iconName = focused ? 'tab_home' : 'tab_home_o';
+              iconName = focused ? 'search' : 'search';
             } else if (route.name === 'Settings') {
-              iconName = focused ? 'tab_setting' : 'tab_setting_o';
+              iconName = focused ? 'heart' : 'heart';
             }
             // You can return any component that you like here!
-            return <IconButton iconName={iconName} style={{color: color}} />;
+            //return <IconButton iconName={iconName} style={{color: color}} />;
+            return <Icon name={iconName} size={size} color={color} />;
           },
         })}
         tabBarOptions={{
