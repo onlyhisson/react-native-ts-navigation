@@ -17,7 +17,23 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 function HomeScreen({navigation}) {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      Home!
+      <Text>Home!</Text>
+    </View>
+  );
+}
+
+function MeetingScreen({navigation}) {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Meeting!</Text>
+    </View>
+  );
+}
+
+function MyPageScreen({navigation}) {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>MyPage!</Text>
     </View>
   );
 }
@@ -47,10 +63,10 @@ function Drawer1({navigation}) {
   );
 }
 
-function SettingsScreen() {
+function SearchScreen() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings!</Text>
+      <Text>Search!</Text>
     </View>
   );
 }
@@ -86,14 +102,21 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="Home"
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
             if (route.name === 'Home') {
               iconName = focused ? 'ios-home' : 'ios-home';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-settings' : 'ios-settings';
+            } else if (route.name === 'Menu') {
+              iconName = focused ? 'ios-menu' : 'ios-menu';
+            } else if (route.name === 'Meeting') {
+              iconName = focused ? 'ios-people' : 'ios-people';
+            } else if (route.name === 'MyPage') {
+              iconName = focused ? 'ios-person' : 'ios-person';
+            } else if (route.name === 'Search') {
+              iconName = focused ? 'ios-search' : 'ios-search';
             }
             // You can return any component that you like here!
             //return <IconButton iconName={iconName} style={{color: color}} />;
@@ -104,8 +127,11 @@ export default function App() {
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
         }}>
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="Home" component={MyDrawer} />
+        <Tab.Screen name="Menu" component={MyDrawer} />
+        <Tab.Screen name="Meeting" component={MeetingScreen} />
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="MyPage" component={MyPageScreen} />
+        <Tab.Screen name="Search" component={SearchScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
