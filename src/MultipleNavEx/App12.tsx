@@ -1,6 +1,7 @@
 /*
   Tab navigation
-  Customizing the appearance
+  Drawer navigation
+  make drawer opened when selecting a specific tab
 */
 
 // You can import Ionicons from @expo/vector-icons if you use Expo or
@@ -13,11 +14,36 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
+      Home!
     </View>
+  );
+}
+
+function Drawer1({navigation}) {
+  React.useEffect(
+    () => navigation.addListener('focus', () => navigation.openDrawer()),
+    [navigation],
+  );
+
+  React.useEffect(
+    () =>
+      navigation.addListener('blur', () => {
+        navigation.closeDrawer();
+      }),
+    [navigation],
+  );
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    />
   );
 }
 
@@ -29,14 +55,29 @@ function SettingsScreen() {
   );
 }
 
+function Drawer2() {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Drawer2!</Text>
+    </View>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Settings" component={SettingsScreen} />
+    <Drawer.Navigator initialRouteName="Drawer1">
+      <Drawer.Screen
+        name="Drawer1"
+        component={Drawer1}
+        options={{
+          drawerLabel: 'Home',
+          gestureEnabled: false,
+        }}
+      />
+      <Drawer.Screen name="Drawer2" component={Drawer2} />
     </Drawer.Navigator>
   );
 }
@@ -63,8 +104,8 @@ export default function App() {
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
         }}>
-        <Tab.Screen name="Home" component={MyDrawer} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Home" component={MyDrawer} />
       </Tab.Navigator>
     </NavigationContainer>
   );
