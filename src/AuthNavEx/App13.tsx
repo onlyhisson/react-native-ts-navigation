@@ -1,7 +1,11 @@
+/*
+  Authentication flows
+*/
 import * as React from 'react';
-import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Button, Text, TextInput, View} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const AuthContext = React.createContext();
 
@@ -14,7 +18,7 @@ function SplashScreen() {
 }
 
 function HomeScreen() {
-  const { signOut } = React.useContext(AuthContext);
+  const {signOut} = React.useContext(AuthContext);
 
   return (
     <View>
@@ -28,7 +32,7 @@ function SignInScreen() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const { signIn } = React.useContext(AuthContext);
+  const {signIn} = React.useContext(AuthContext); // signIn 함수 호출, return 사용 가능
 
   return (
     <View>
@@ -43,14 +47,14 @@ function SignInScreen() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Sign in" onPress={() => signIn({ username, password })} />
+      <Button title="Sign in" onPress={() => signIn({username, password})} />
     </View>
   );
 }
 
 const Stack = createStackNavigator();
 
-export default function App({ navigation }) {
+export default function App({navigation}) {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -78,7 +82,7 @@ export default function App({ navigation }) {
       isLoading: true,
       isSignout: false,
       userToken: null,
-    }
+    },
   );
 
   React.useEffect(() => {
@@ -96,7 +100,7 @@ export default function App({ navigation }) {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
 
     bootstrapAsync();
@@ -105,24 +109,27 @@ export default function App({ navigation }) {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
+        console.log('signIn1 ===========================');
+        console.log(data); // {"password": "111", "username": "aaa"}
+        console.log('signIn2 ===========================');
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: () => dispatch({type: 'SIGN_OUT'}),
       signUp: async data => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
     }),
-    []
+    [],
   );
 
   return (
@@ -139,7 +146,7 @@ export default function App({ navigation }) {
               component={SignInScreen}
               options={{
                 title: 'Sign in',
-            // When logging out, a pop animation feels intuitive
+                // When logging out, a pop animation feels intuitive
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
               }}
             />
